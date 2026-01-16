@@ -4,7 +4,9 @@ Projeto **Controle de Prazos** desenvolvido em Python para gerenciar e acompanha
 
 ## Funcionalidade
 
-- Controle de status (pendente, em andamento, concluído)
+- Controle de status de migração (adiantada, no limite, atrasada)
+- Possibilidade de migração **com adequação** ou **sem adequação**
+- Cálculo automático de dias entre datas de envio, adequação e etapas internas
 
 ## Como usar
 
@@ -12,3 +14,4 @@ Projeto **Controle de Prazos** desenvolvido em Python para gerenciar e acompanha
 
 ```bash
 git clone https://github.com/SEU_USUARIO/controle_de_prazos.git
+
