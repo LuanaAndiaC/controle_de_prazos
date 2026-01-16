@@ -2,7 +2,7 @@
 
 Projeto **Controle de Prazos** desenvolvido em Python para gerenciar e acompanhar prazos de processos ou tarefas de migração.
 
-## Funcionalidades
+## Funcionalidade
 
 - Controle de status (pendente, em andamento, concluído)
 
