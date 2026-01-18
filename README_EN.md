@@ -1,18 +1,18 @@
 from datetime import datetime
 
 # Additional deadlines
-INTERNAL_STEPS = 30
-CCEE_DEADLINE = 30
+INTERNAL_STEPS = 30  # Number of days required for internal steps
+CCEE_DEADLINE = 30   # Number of days required for CCEE deadline
 
 def calculate_days(start_date, end_date):
-    """Returns the difference in days between two dates."""
+    """Returns the number of days between two dates."""
     return (end_date - start_date).days
 
 def show_explanation(days_remaining):
-    """Shows if there is enough time for internal steps and the CCEE deadline."""
-    total_needed = INTERNAL_STEPS + CCEE_DEADLINE
+    """Shows if there is enough time for internal steps and CCEE deadline."""
+    total_required = INTERNAL_STEPS + CCEE_DEADLINE
 
-    if days_remaining >= total_needed:
+    if days_remaining >= total_required:
         print(f"✅ {days_remaining} days remaining until the migration final deadline.")
         print(f"👍 With {days_remaining} days, there is enough time for:")
         print(f"- Internal steps: {INTERNAL_STEPS} days")
