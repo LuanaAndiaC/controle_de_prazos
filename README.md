@@ -19,7 +19,7 @@ git clone https://github.com/SEU_USUARIO/controle_de_prazos.git
 
 # Deadline Control
 
-Project **Migration Deadline Control** developed in Python to manage and track migration process or task deadlines.
+**Deadline Control** is a Python project developed to manage and track migration process or task deadlines.
 
 ## Features
 
@@ -32,5 +32,5 @@ Project **Migration Deadline Control** developed in Python to manage and track m
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/controle_de_prazos.git
->>>>>>> 13e25c3 (Atualiza textos de main.py e README)
+git clone https://github.com/LuanaAndiaC/controle_de_prazos.git
+```
