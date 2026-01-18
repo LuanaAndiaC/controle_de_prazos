@@ -1,6 +1,6 @@
 from datetime import datetime
 
-# Configurações dos prazos internos
+# Prazos adicionais
 ETAPAS_INTERNAS = 30
 PRAZO_CCEE = 30
 
@@ -43,7 +43,7 @@ def pedir_data(mensagem):
 
 def main():
     # Passo 1: datas iniciais
-    print("=== CONFIGURAÇÃO DE PRAZOS ===")
+    print("=== VERIFICAÇÃO DE PRAZOS ===")
     data_aceite_denuncia = pedir_data("Data do aceite da denúncia (dd/mm/aaaa): ")
     data_migracao = pedir_data("Data prevista de conclusão da migração (dd/mm/aaaa): ")
 
@@ -52,11 +52,11 @@ def main():
         return
 
     print(f"\nO aceite da denúncia ocorreu em {data_aceite_denuncia.strftime('%d/%m/%Y')}.")
-    print(f"A migração está prevista para ocorrer até {data_migracao.strftime('%d/%m/%Y')}.\n")
+    print(f"A migração está prevista para ocorrer em {data_migracao.strftime('%d/%m/%Y')}.\n")
 
     # Menu principal
     while True:
-        print("=== CONTROLE DE PRAZOS DE MIGRAÇÃO ===")
+        print("=== VERIFICAÇÃO DE PRAZOS DE MIGRAÇÃO ===")
         print("1 - Migração sem adequação")
         print("2 - Migração com adequação")
         print("3 - Sair")
@@ -65,7 +65,7 @@ def main():
         
         if opcao == "1":
             # Migração sem adequação
-            data_envio = pedir_data("Data de envio da documentação (dd/mm/aaaa): ")
+            data_envio = pedir_data("Data de envio da documentação inicial (dd/mm/aaaa): ")
             dias_sobrando = calcular_dias(data_envio, data_migracao)
             if dias_sobrando < 0:
                 print("❌ A documentação foi enviada após o prazo final da migração!\n")

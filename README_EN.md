@@ -1,85 +1,95 @@
-# main.py
-# Project: Migration Deadline Control with Dates
-# Author: Luana Andia da Costa
-
 from datetime import datetime
 
+# Additional deadlines
+INTERNAL_STEPS = 30
+CCEE_DEADLINE = 30
+
 def calculate_days(start_date, end_date):
-    """Calculates the number of days between two dates"""
-    delta = end_date - start_date
-    return delta.days
+    """Returns the difference in days between two dates."""
+    return (end_date - start_date).days
 
-def migration_without_adjustment():
-    total_deadline = 180
-    max_submission_days = 30
-    internal_steps = 30
-    ccee_deadline = 30
-    minimum_required_time = internal_steps + ccee_deadline
+def show_explanation(days_remaining):
+    """Shows if there is enough time for internal steps and the CCEE deadline."""
+    total_needed = INTERNAL_STEPS + CCEE_DEADLINE
 
-    try:
-        submission_date_str = input("Submission date of the documentation (dd/mm/yyyy): ")
-        submission_date = datetime.strptime(submission_date_str, "%d/%m/%Y")
-        today = datetime.today()
-        submission_days = calculate_days(today, submission_date)
-    except ValueError:
-        print("❌ Invalid date format!")
-        return
-
-    remaining_days = total_deadline - submission_days
-
-    if submission_days > max_submission_days:
-        print("❌ Documentation submitted after the initial deadline.")
-    elif remaining_days > minimum_required_time + 30:
-        print("✅ Migration without adjustment completed ahead of schedule.")
-    elif remaining_days >= minimum_required_time:
-        print("⚠️ Migration without adjustment at the deadline limit.")
+    if days_remaining >= total_needed:
+        print(f"✅ {days_remaining} days remaining until the migration final deadline.")
+        print(f"👍 With {days_remaining} days, there is enough time for:")
+        print(f"- Internal steps: {INTERNAL_STEPS} days")
+        print(f"- CCEE deadline: {CCEE_DEADLINE} days")
+        print("Everything is on schedule!\n")
+    elif days_remaining >= 0:
+        print(f"⚠️ Only {days_remaining} days remaining until the migration final deadline!")
+        print("It may not be enough time to complete:")
+        if days_remaining < INTERNAL_STEPS:
+            print(f"- Internal steps (missing {INTERNAL_STEPS - days_remaining} days)")
+            print(f"- CCEE deadline: {CCEE_DEADLINE} days")
+        else:
+            print(f"- Internal steps: {INTERNAL_STEPS} days")
+            print(f"- CCEE deadline (missing {CCEE_DEADLINE - (days_remaining - INTERNAL_STEPS)} days)")
+        print()
     else:
-        print("❌ Migration without adjustment overdue.")
+        print("❌ Deadline missed! The action occurred after the migration final deadline.\n")
 
-def migration_with_adjustment():
-    total_deadline = 180
-    submission_days = 30
-    max_adjustment_days = 120
-    internal_steps = 30
-
-    try:
-        start_date_str = input("Adjustment start date (dd/mm/yyyy): ")
-        end_date_str = input("Adjustment end date (dd/mm/yyyy): ")
-        start_date = datetime.strptime(start_date_str, "%d/%m/%Y")
-        end_date = datetime.strptime(end_date_str, "%d/%m/%Y")
-        adjustment_days = calculate_days(start_date, end_date)
-    except ValueError:
-        print("❌ Invalid date format!")
-        return
-
-    total_used_time = submission_days + adjustment_days + internal_steps
-
-    if adjustment_days < max_adjustment_days:
-        remaining = total_deadline - total_used_time
-        print(f"✅ Adjustment completed ahead of schedule. {remaining} days remaining.")
-    elif adjustment_days == max_adjustment_days:
-        print("⚠️ Adjustment at the limit. Migration possible but tight.")
-    else:
-        print("❌ Adjustment overdue. Migration past the deadline.")
-
-def menu():
+def ask_date(message):
+    """Asks the user for a date until a valid one is provided."""
     while True:
-        print("\n=== MIGRATION DEADLINE CONTROL ===")
+        try:
+            date_str = input(message).strip()
+            date = datetime.strptime(date_str, "%d/%m/%Y")
+            return date
+        except ValueError:
+            print("Invalid format! Use dd/mm/yyyy, for example 01/03/2026.")
+
+def main():
+    # Step 1: initial dates
+    print("=== DEADLINE CHECK ===")
+    complaint_acceptance_date = ask_date("Date of complaint acceptance (dd/mm/yyyy): ")
+    migration_due_date = ask_date("Expected migration completion date (dd/mm/yyyy): ")
+
+    if migration_due_date <= complaint_acceptance_date:
+        print("❌ The expected migration date must be after the complaint acceptance date.")
+        return
+
+    print(f"\nThe complaint was accepted on {complaint_acceptance_date.strftime('%d/%m/%Y')}.")
+    print(f"The migration is expected to occur on {migration_due_date.strftime('%d/%m/%Y')}.\n")
+
+    # Main menu
+    while True:
+        print("=== MIGRATION DEADLINE CHECK ===")
         print("1 - Migration without adjustment")
         print("2 - Migration with adjustment")
         print("3 - Exit")
-
-        option = input("Choose an option (1, 2, or 3): ")
-
+        
+        option = input("Choose an option (1, 2, or 3): ").strip()
+        
         if option == "1":
-            migration_without_adjustment()
+            # Migration without adjustment
+            submission_date = ask_date("Date of initial documentation submission (dd/mm/yyyy): ")
+            days_remaining = calculate_days(submission_date, migration_due_date)
+            if days_remaining < 0:
+                print("❌ Documentation was submitted after the migration final deadline!\n")
+            else:
+                print("✅ Migration without adjustment is on track.")
+                show_explanation(days_remaining)
+
         elif option == "2":
-            migration_with_adjustment()
+            # Migration with adjustment
+            adjustment_start_date = ask_date("Adjustment start date (dd/mm/yyyy): ")
+            adjustment_end_date = ask_date("Adjustment end date (dd/mm/yyyy): ")
+            
+            if adjustment_end_date > migration_due_date:
+                print("❌ The adjustment ends after the migration final deadline!\n")
+            else:
+                days_remaining = calculate_days(adjustment_end_date, migration_due_date)
+                print("✅ Adjustment completed on time." if days_remaining >= 0 else "❌ Adjustment delayed!")
+                show_explanation(days_remaining)
+
         elif option == "3":
             print("Exiting the program...")
             break
         else:
-            print("❌ Invalid option. Please try again.")
+            print("Invalid option! Choose 1, 2, or 3.\n")
 
 if __name__ == "__main__":
-    menu()
+    main()
