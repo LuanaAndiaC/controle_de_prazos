@@ -32,5 +32,6 @@ git clone https://github.com/SEU_USUARIO/controle_de_prazos.git
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/LuanaAndiaC/controle_de_prazos.git
+git clone https://github.com/yourusername/controle_de_prazos.git
+
 ```
